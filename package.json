@@ -1,5 +1,5 @@
 {
-  "name": "@storybook/testing-vue3",
+  "name": "@fazulk/testing-vue3",
   "version": "0.0.1",
   "description": "Testing utilities that allow you to reuse your stories in your unit tests",
   "keywords": [
@@ -9,7 +9,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/storybookjs/testing-vue3"
+    "url": "https://github.com/fazulk/testing-vue3"
   },
   "author": "yannbf@gmail.com",
   "module": "dist/testing-vue3.esm.js",
