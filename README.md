@@ -8,6 +8,9 @@
 
 > ⚠️ This library is for **Vue 3** projects. If you're using Storybook with **Vue 2**, please check [@storybook/testing-vue](https://github.com/storybookjs/testing-vue) instead!
 
+## Why this fork?
+
+You are able to call the `play` method on your story from within your test runner. This is useful if you are alredy using the storybook interactions plugin.
 
 ## Installation
 
@@ -36,12 +39,12 @@ Essentially, if your stories look similar to this, you're good to go!
 ```jsx
 // CSF: default export (meta) + named exports (stories)
 export default {
-  title: 'Example/Button',
-  component: Button,
+  title: "Example/Button",
+  component: Button
 };
 
 export const Primary = () => ({
-  template: '<my-button primary />',
+  template: "<my-button primary />"
 });
 ```
 
@@ -53,8 +56,8 @@ If you have global decorators/parameters/etc and want them applied to your stori
 
 ```tsx
 // setupFile.js <-- this will run before the tests in jest.
-import { setGlobalConfig } from '@storybook/testing-vue3';
-import * as globalStorybookConfig from './.storybook/preview'; // path of your preview.js file
+import { setGlobalConfig } from "@storybook/testing-vue3";
+import * as globalStorybookConfig from "./.storybook/preview"; // path of your preview.js file
 
 setGlobalConfig(globalStorybookConfig);
 ```
@@ -77,14 +80,14 @@ For the setup file to be picked up, you need to pass it as an option to jest in 
 If you use the composed story (e.g. PrimaryButton), the component will render with the args that are passed in the story. However, you are free to pass any props on top of the component, and those props will override the default values passed in the story's args.
 
 ```tsx
-import { render, screen } from '@testing-library/vue';
-import { composeStories } from '@storybook/testing-vue3';
-import * as stories from './Button.stories'; // import all stories from the stories file
+import { render, screen } from "@testing-library/vue";
+import { composeStories } from "@storybook/testing-vue3";
+import * as stories from "./Button.stories"; // import all stories from the stories file
 
 // Every component that is returned maps 1:1 with the stories, but they already contain all decorators from story level, meta level and global level.
 const { Primary, Secondary } = composeStories(stories);
 
-test('renders primary button with default args', () => {
+test("renders primary button with default args", () => {
   render(Primary());
   const buttonElement = screen.getByText(
     /Text coming from args in stories file!/i
@@ -92,8 +95,8 @@ test('renders primary button with default args', () => {
   expect(buttonElement).not.toBeNull();
 });
 
-test('renders primary button with overriden props', () => {
-  render(Secondary({ label: 'Hello world' })); // you can override props and they will get merged with values from the Story's args
+test("renders primary button with overriden props", () => {
+  render(Secondary({ label: "Hello world" })); // you can override props and they will get merged with values from the Story's args
   const buttonElement = screen.getByText(/Hello world/i);
   expect(buttonElement).not.toBeNull();
 });
@@ -104,17 +107,17 @@ test('renders primary button with overriden props', () => {
 You can use `composeStory` if you wish to apply it for a single story rather than all of your stories. You need to pass the meta (default export) as well.
 
 ```tsx
-import { render, screen } from '@testing-library/vue';
-import { composeStory } from '@storybook/testing-vue3';
-import Meta, { Primary as PrimaryStory } from './Button.stories';
+import { render, screen } from "@testing-library/vue";
+import { composeStory } from "@storybook/testing-vue3";
+import Meta, { Primary as PrimaryStory } from "./Button.stories";
 
 // Returns a component that already contain all decorators from story level, meta level and global level.
 const Primary = composeStory(PrimaryStory, Meta);
 
-test('onclick handler is called', async () => {
+test("onclick handler is called", async () => {
   const onClickSpy = jest.fn();
   render(Primary({ onClick: onClickSpy }));
-  const buttonElement = screen.getByRole('button');
+  const buttonElement = screen.getByRole("button");
   buttonElement.click();
   expect(onClickSpy).toHaveBeenCalled();
 });
